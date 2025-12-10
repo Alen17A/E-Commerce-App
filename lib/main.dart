@@ -1,5 +1,10 @@
-import 'package:ecommerce_sample/presentation/pages/splash_page.dart';
+import 'package:ecommerce_sample/core/services/all_products.dart';
+import 'package:ecommerce_sample/features/all_products/bloc/product_bloc.dart';
+import 'package:ecommerce_sample/features/all_products/bloc/product_cubit.dart';
+import 'package:ecommerce_sample/features/all_products/data/repositories/product_repository.dart';
+import 'package:ecommerce_sample/features/all_products/presentation/pages/main_page_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,28 +16,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'E-Commerce App using BLoC',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
+    final productService = ProductsAPIService.instance;
+    final productRepository = ProductRepository(productService);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ProductCubit(productRepository)),
+        BlocProvider(create: (_) => ProductBloc(productRepository))
+      ],
+      child: MaterialApp(
+        title: 'E-Commerce App using BLoC',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MainPageNavigation(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: SplashPage(),
     );
   }
 }

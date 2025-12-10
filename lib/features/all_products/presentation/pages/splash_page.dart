@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ecommerce_sample/presentation/pages/home_page.dart';
+import 'package:ecommerce_sample/features/all_products/presentation/pages/main_page_navigation.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
       Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => MainPageNavigation()),
       ),
     );
     super.initState();
